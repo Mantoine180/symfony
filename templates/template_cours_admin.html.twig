@@ -1,0 +1,15 @@
+<div class="popover" role="popover" style="padding: 20px;">
+	<p>Ajouter un cours</p>
+	<select name="add-intervenant" id="add-intervenant">
+		{% for intervenant in intervenants %}
+			<option value="{{ intervenant.idIntervenant }}">{{ intervenant.user.firstname }}
+				{{ intervenant.user.lastname }}</option>
+		{% endfor %}
+	</select>
+    <select name="add-matiere" id="add-matiere">
+		{% for matiere in matieres %}
+			<option value="{{ matiere.id }}">{{ matiere.libelle }} - {{ matiere.specialite }}</option>
+		{% endfor %}
+	</select>
+	<button>valider</button>
+</div>

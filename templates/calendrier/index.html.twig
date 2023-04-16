@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Calendrier index{% endblock %}
+
+{% block body %}
+    <h1>Calendrier index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id_calendrier</th>
+                <th>Date_debut</th>
+                <th>Type</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for calendrier in calendriers %}
+            <tr>
+                <td>{{ calendrier.idCalendrier }}</td>
+                <td>{{ calendrier.dateDebut ? calendrier.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ calendrier.type }}</td>
+                <td>
+                    <a href="{{ path('app_calendrier_show', {'id_calendrier': calendrier.idCalendrier}) }}">show</a>
+                    <a href="{{ path('app_calendrier_edit', {'id_calendrier': calendrier.idCalendrier}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_calendrier_new') }}">Create new</a>
+{% endblock %}

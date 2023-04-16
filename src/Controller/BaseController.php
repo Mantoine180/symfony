@@ -8,9 +8,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BaseController extends AbstractController
 {
-    function pagePrincipale()
+    /**
+     * @Route ("/", name="homepage")
+     */
+    public function home()
     {
-        return new Response('<a class="favorite styled" type="button" href="http://127.0.0.1:8000/produits/affichage-par-mois">Page produit</a>');
+        return $this->render('home/index.html.twig');
     }
 
     /**
@@ -29,6 +32,26 @@ class BaseController extends AbstractController
             'commentaires' => $commentaires,
         ]);
         //ucwords = upper case words
+    }
+    /**
+     * @Route ("/calendrier/{year}",name="calendrier")
+     */
+    function showCalendar($year)
+    {
+        $annee = new \DateTime($year.'-08-31');
+        $annee ->modify('first monday');
+
+        $annee_suivante=new \DateTime(($year+1).'-08-31');
+        $annee_suivante ->modify('first monday');
+
+        $tableau_semaines=[$annee->format('Y-m-d')];
+        while ($annee<$annee_suivante)
+        {
+            $tableau_semaines[]=$annee->modify('next monday')->format('Y-m-d');
+        }
+        array_pop($tableau_semaines);
+        
+        return $this->render("calendrier.html.twig",["tableauSemaines"=>$tableau_semaines]);
     }
 
 }

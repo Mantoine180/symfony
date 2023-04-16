@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Calendrier{% endblock %}
+
+{% block body %}
+    <a href="{{ path('calendrier',{'year':"2020"}) }}">Test</a>
+    <div id='calendar'></div>
+
+    <div>
+    {% for key,semaine in tableauSemaines %}
+        <div class="semaine" id="semaine{{ key }}" data-semaine="{{semaine}}"></div>
+    {% endfor %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var semaines=document.querySelectorAll("[data-semaine]");
+            var calendarEl = document.getElementById('calendar');
+            var isOnSelect = false;
+            var eventCreate=null;
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'timeGridWeek',
+                firstDay: 1,
+                locale: 'fr',
+                hiddenDays: [0, 6],
+                selectable: true,
+                selectHelper: true,
+                slotMinTime:'07:00:00',
+                slotMaxTime:'19:00:00',
+                slotDuration:'00:15:00',
+                height:"auto",
+                select: function(info) {
+
+                    // on clear les popvers
+                    const popovers = document.querySelectorAll('.popover');
+                    popovers.forEach((element) => {
+                        element.remove();
+                    });
+
+                    if (eventCreate!=null)
+                    {
+                        eventCreate.remove();
+                        eventCreate=null
+                    }
+                    eventCreate=calendar.addEvent({
+                        title: 'event3',
+                        start: info.startStr,
+                        end: info.endStr,
+                        allDay: false // will make the time show
+                    });
+
+                    fetch('https://127.0.0.1:8000/get-cours-infos')
+                        .then((response) => response.text())
+                        .then((html) => {
+                            let customPopover = new bootstrap.Popover(info.jsEvent.target, {
+                            placement: 'right',
+                            content: 'x',
+                            html: true,
+                            sanitize: false,
+                            template: html
+                        });
+                        customPopover.show();
+                        
+                        });
+                    isOnSelect = true;
+                    
+                },
+            });
+            var calendar_buttons={};
+            var all_buttons="";
+
+            for (var i=0;i<semaines.length;i++)
+            {
+                all_buttons=all_buttons+"custom"+i+",";
+                calendar_buttons["custom"+i]={
+                    text: i.toString(),
+                    click: (event, htmlElement) => {
+                        calendar.gotoDate(document.getElementById("semaine" + htmlElement.title).dataset.semaine);
+                    }
+                }
+            }
+
+            all_buttons = all_buttons.substr(0, all_buttons.length - 1);
+            calendar.setOption('headerToolbar',{start:all_buttons});
+            calendar.setOption('customButtons',calendar_buttons);
+            calendar.render();
+
+            fetch('https://127.0.0.1:8000/get-alternance-weeks')
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    
+                    data.forEach((element) => {
+                        var dateDebut = new Date(element.dateDebut);
+                        dateDebut.setHours(0);
+                        dateDebut.setMinutes(0);
+                        dateDebut.setSeconds(0);
+
+                        var newDateDebut = dateDebut.toISOString();
+                        var dateString = newDateDebut;
+                        var date = new Date(dateString);
+                        date.setDate(date.getDate() + 5);
+                        var newDateString = date.toISOString();
+
+                        calendar.addEvent({
+                            title: element.type,
+                            start: newDateDebut,
+                            end: newDateString,
+                            allDay: false // will make the time show
+                        });
+                    });
+                });
+
+            document.body.addEventListener('click', (event) => {
+
+                if (isOnSelect) {
+                    isOnSelect = false;
+                    return;
+                }
+
+                if (!event.target.closest('.popover')) {
+                    const popovers = document.querySelectorAll('.popover');
+                    popovers.forEach((element) => {
+                        element.remove();
+                    });
+                    //Même code que ligne 38
+                    if (eventCreate!=null)
+                    {
+                        eventCreate.remove();
+                        eventCreate=null
+                    }
+                }
+            })
+
+        },
+);
+    </script>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Intervenant index
+{% endblock %}
+
+{% block body %}
+	<h1>Intervenant index</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id_intervenant</th>
+				<th>Prénom</th>
+				<th>Nom</th>
+				<th>Nb_heure</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for intervenant in intervenants %}
+				<tr>
+					<td>{{ intervenant.idIntervenant }}</td>
+					<td>{{ intervenant.user.firstname }}</td>
+					<td>{{ intervenant.user.lastname }}</td>
+					<td>{{ intervenant.nbHeure }}</td>
+					<td>
+						<a href="{{ path('app_intervenant_show', {'id_intervenant': intervenant.idIntervenant}) }}">show</a>
+						<a href="{{ path('app_intervenant_edit', {'id_intervenant': intervenant.idIntervenant}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="3">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a href="{{ path('app_intervenant_new') }}">Create new</a>
+{% endblock %}
