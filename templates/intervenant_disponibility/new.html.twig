@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création d'une nouvelle disponibilité d'un Intervenant{% endblock %}
+
+{% block body %}
+    <h1>Création d'une nouvelle disponibilité d'un Intervenant</h1>
+
+    {{ include('intervenant_disponibility/_form.html.twig') }}
+
+    <a href="{{ path('app_intervenant_disponibility_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register
+{% endblock %}
+
+{% block body %}
+
+	{% set year = 'now' | date('Y') %}
+	{% if 'now' | date('m') <= 8 %}
+		{% set year = year - 1 %}
+	{% endif %}
+	
+	<div>
+		<a href="{{ path('app_intervenant_calendar',{'year': year}) }}">Get full calendar from current year</a>
+	</div>
+	<div>
+		<a href="{{ path('app_intervenant_disponibility_index') }}">Disponibilité</a>
+	</div>
+	<div>
+		<a href="{{ path('app_cours_index_intervenant') }}">Cours</a>
+	</div>
+{% endblock %}

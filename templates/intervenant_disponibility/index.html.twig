@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Disponibilité des intervenants{% endblock %}
+
+{% block body %}
+    <h1>Disponibilité des intervenants</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date de debut</th>
+                <th>Date de fin</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for intervenant_disponibility in intervenant_disponibilities %}
+            <tr>
+                <td>{{ intervenant_disponibility.dateDebut ? intervenant_disponibility.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ intervenant_disponibility.dateFin ? intervenant_disponibility.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_intervenant_disponibility_show', {'id': intervenant_disponibility.id}) }}">show</a>
+                    <a href="{{ path('app_intervenant_disponibility_edit', {'id': intervenant_disponibility.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_intervenant_disponibility_new') }}">Create new</a>
+{% endblock %}

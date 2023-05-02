@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Calendrier{% endblock %}
+{% block title %}Calendrier Intervenant{% endblock %}
+
 
 {% block body %}
     <div id='calendar'></div>
@@ -43,65 +44,11 @@
                         eventCreate=null
                     }
                     eventCreate=calendar.addEvent({
-                        title: 'Cours',
+                        title: 'event3',
                         start: info.startStr,
                         end: info.endStr,
                         allDay: false // will make the time show
                     });
-
-                    fetch('/get-cours-infos')
-                        .then((response) => response.text())
-                        .then((html) => {
-                            let customPopover = new bootstrap.Popover(info.jsEvent.target, {
-                                placement: 'right',
-                                content: 'x',
-                                html: true,
-                                sanitize: false,
-                                template: html
-                            });
-                            
-                            customPopover.show();
-
-                            document.querySelector("#add-cours").addEventListener('click', () => {
-                                const dateStart = new Date(info.startStr);
-                                const isoDateStart = dateStart.toISOString();
-                                console.log(isoDateStart);
-                                fetch('/add-cours', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                        'dateHeureCour_debut': isoDateStart,
-                                        'dateHeureCour_fin': info.endStr,
-                                        'id_matiere': document.querySelector("#add-matiere").value
-                                    })
-                                })
-                                .then((response) => response.json())
-                                .then((data) => {
-
-                                    if (data.status == "error_hours") {
-                                        alert("Trop d'heure on déjà été attribué à cette matière");
-                                    }
-
-                                    if (data.status == "ok") {
-                                        console.log(data);
-
-                                        // eventCreate.title = "CLICKED!";
-                                        eventCreate.setProp('title', data['title']);
-                                        calendar.refetchEvents();
-
-                                        eventCreate=null;
-                                        const popovers = document.querySelectorAll('.popover');
-                                        popovers.forEach((element) => {
-                                            element.remove();
-                                        });
-                                    } 
-                                });
-                            });
-                        
-                        });
-                    isOnSelect = true;
                 },
             });
             var calendar_buttons={};
@@ -149,11 +96,10 @@
                     });
                 });
 
-            fetch('/get-cours')
+            fetch('/intervenant/get-cours')
                 .then((response) => response.json())
                 .then((data) => {                    
                     data.forEach((element) => {
-                        console.log(element);
                         calendar.addEvent({
                             title: element.idMatiere.intervenant.user.firstname + ' ' + element.idMatiere.intervenant.user.lastname + ' - ' + element.idMatiere.libelle + ' - ' + element.idMatiere.specialite,
                             start: element.dateHeureCourDebut,
@@ -162,27 +108,6 @@
                         });
                     });
                 });
-
-            document.body.addEventListener('click', (event) => {
-
-                if (isOnSelect) {
-                    isOnSelect = false;
-                    return;
-                }
-
-                if (!event.target.closest('.popover')) {
-                    const popovers = document.querySelectorAll('.popover');
-                    popovers.forEach((element) => {
-                        element.remove();
-                    });
-                    //Même code que ligne 38
-                    if (eventCreate!=null)
-                    {
-                        eventCreate.remove();
-                        eventCreate=null
-                    }
-                }
-            })
         },
 );
     </script>

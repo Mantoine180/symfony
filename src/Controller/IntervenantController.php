@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Intervenant;
 use App\Form\IntervenantFormType;
 use App\Form\RegistrationFormType;
+use App\Form\UserFormType;
 use App\Security\AppCustomAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\IntervenantRepository;
@@ -38,6 +39,7 @@ class IntervenantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setRoles(["ROLE_INTERVENANT"]);
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
@@ -48,6 +50,7 @@ class IntervenantController extends AbstractController
 
             $intervenant = new Intervenant();
             $intervenant->setUser($user);
+            
 
             $entityManager->persist($user);
             $entityManager->persist($intervenant);
@@ -72,7 +75,7 @@ class IntervenantController extends AbstractController
     #[Route('/{id_intervenant}/edit', name: 'app_intervenant_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Intervenant $intervenant, IntervenantRepository $intervenantRepository): Response
     {
-        $form = $this->createForm(Intervenant1Type::class, $intervenant);
+        $form = $this->createForm(UserFormType::class, $intervenant->getUser());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -90,7 +93,7 @@ class IntervenantController extends AbstractController
     #[Route('/{id_intervenant}', name: 'app_intervenant_delete', methods: ['POST'])]
     public function delete(Request $request, Intervenant $intervenant, IntervenantRepository $intervenantRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $intervenant->getId_intervenant(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $intervenant->getIdIntervenant(), $request->request->get('_token'))) {
             $intervenantRepository->remove($intervenant, true);
         }
 

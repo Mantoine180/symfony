@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\CoursRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -24,19 +23,6 @@ class Cours
     #[ORM\ManyToOne(inversedBy: 'cours')]
     #[ORM\JoinColumn(nullable: false, name: 'id_matiere')]
     private ?Matiere $id_matiere = null;
-
-    #[ORM\ManyToOne(inversedBy: 'cours')]
-    #[ORM\JoinColumn(nullable: false,name: 'id_calendrier', referencedColumnName:'id_calendrier')]
-    private ?Calendrier $id_calendrier = null;
-
-    #[ORM\ManyToOne(inversedBy: 'cours')]
-    #[ORM\JoinColumn(nullable: false,name: 'id_intervenant', referencedColumnName:'id_intervenant')]
-    private ?Intervenant $intervenant = null;
-
-    public function __construct()
-    {
-        $this->id_cours = new ArrayCollection();
-    }
 
     public function getIdCours(): ?int
     {
@@ -75,30 +61,6 @@ class Cours
     public function setIdMatiere(?Matiere $id_matiere): self
     {
         $this->id_matiere = $id_matiere;
-
-        return $this;
-    }
-
-    public function getIdCalendrier(): ?Calendrier
-    {
-        return $this->id_calendrier;
-    }
-
-    public function setIdCalendrier(?Calendrier $id_calendrier): self
-    {
-        $this->id_calendrier = $id_calendrier;
-
-        return $this;
-    }
-
-    public function getIntervenant(): ?Intervenant
-    {
-        return $this->intervenant;
-    }
-
-    public function setIntervenant(?Intervenant $intervenant): self
-    {
-        $this->intervenant = $intervenant;
 
         return $this;
     }

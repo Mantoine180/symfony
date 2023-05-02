@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Matiere;
 use App\Entity\Intervenant;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +16,13 @@ class MatiereType extends AbstractType
     {
         $builder
             ->add('libelle')
-            ->add('specialite')
+            ->add('specialite', ChoiceType::class, [
+                'choices'  => [
+                    'Développement' => 'developpement',
+                    'Infrastructure' => 'infrastructure',
+                    'Général' => 'general'
+                ],
+            ])
             ->add('nbHours')
             ->add('intervenant', EntityType::class, [
                 // looks for choices from this entity

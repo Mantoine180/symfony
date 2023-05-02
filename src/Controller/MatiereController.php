@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Matiere;
 use App\Form\MatiereType;
+use App\Repository\CoursRepository;
 use App\Repository\MatiereRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MatiereController extends AbstractController
 {
     #[Route('/', name: 'app_matiere_index', methods: ['GET'])]
-    public function index(MatiereRepository $matiereRepository): Response
+    public function index(MatiereRepository $matiereRepository, CoursRepository $coursRepository): Response
     {
         return $this->render('matiere/index.html.twig', [
             'matieres' => $matiereRepository->findAll(),

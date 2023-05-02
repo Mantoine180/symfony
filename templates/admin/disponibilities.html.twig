@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}IntervenantDisponibility index
+{% endblock %}
+
+{% block body %}
+	<h1>IntervenantDisponibility index</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Intervenant</th>
+				<th>DateDebut</th>
+				<th>DateFin</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for intervenant_disponibility in disponibilities %}
+				<tr>
+					<td>{{ intervenant_disponibility.intervenant.user.firstname }} {{ intervenant_disponibility.intervenant.user.lastname }}</td>
+					<td>{{ intervenant_disponibility.dateDebut ? intervenant_disponibility.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
+					<td>{{ intervenant_disponibility.dateFin ? intervenant_disponibility.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="4">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}IntervenantDisponibility{% endblock %}
+
+{% block body %}
+    <h1>IntervenantDisponibility</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>DateDebut</th>
+                <td>{{ intervenant_disponibility.dateDebut ? intervenant_disponibility.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateFin</th>
+                <td>{{ intervenant_disponibility.dateFin ? intervenant_disponibility.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_intervenant_disponibility_index') }}">back to list</a>
+
+    <a href="{{ path('app_intervenant_disponibility_edit', {'id': intervenant_disponibility.id}) }}">edit</a>
+
+    {{ include('intervenant_disponibility/_delete_form.html.twig') }}
+{% endblock %}

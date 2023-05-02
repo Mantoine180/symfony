@@ -19,13 +19,12 @@ class Matiere
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $specialite = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_matiere', targetEntity: Cours::class)]
+    #[ORM\OneToMany(mappedBy: 'id_matiere', targetEntity: Cours::class,cascade: ['persist', 'remove'])]
     #[Ignore]
     private Collection $cours;
 
     #[ORM\ManyToOne(inversedBy: 'matieres')]
     #[ORM\JoinColumn(nullable: false,name: 'id_intervenant', referencedColumnName:'id_intervenant')]
-    #[Ignore]
     private ?Intervenant $intervenant = null;
 
     #[ORM\Column(length: 255)]
@@ -37,6 +36,16 @@ class Matiere
     public function __construct()
     {
         $this->cours = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getLibelle();
+    }
+
+    public function getFullName(): string 
+    {
+        return $this->getLibelle() . ' - ' . $this->getSpecialite();
     }
 
     public function getId(): ?int

@@ -8,10 +8,6 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id_calendrier</th>
-                <td>{{ calendrier.idCalendrier }}</td>
-            </tr>
-            <tr>
                 <th>Date_debut</th>
                 <td>{{ calendrier.dateDebut ? calendrier.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
@@ -24,7 +20,7 @@
 
     <a href="{{ path('app_calendrier_index') }}">back to list</a>
 
-    <a href="{{ path('app_calendrier_edit', {'id_calendrier': calendrier.id_calendrier}) }}">edit</a>
+    <a href="{{ path('app_calendrier_edit', {'id_calendrier': calendrier.IdCalendrier}) }}">edit</a>
 
     {{ include('calendrier/_delete_form.html.twig') }}
 {% endblock %}

@@ -4,6 +4,14 @@
 {% endblock %}
 
 {% block body %}
+
+	{% set year = 'now' | date('Y') %}
+	{% if 'now' | date('m') <= 8 %}
+		{% set year = year - 1 %}
+	{% endif %}
+
+	<a href="{{ path('calendrier',{'year': year}) }}">Get full calendar from current year</a>
+
 	<div>
 		<a href="{{ path('app_intervenant_index') }}">Intervenant</a>
 	</div>
@@ -13,5 +21,10 @@
 	<div>
 		<a href="{{ path('app_calendrier_index') }}">calendrier</a>
 	</div>
-
+	<div>
+		<a href="{{ path('app_cours_index') }}">Cours</a>
+	</div>
+	<div>
+		<a href="{{ path('all_disponibility') }}">Intervenant Disponibilities</a>
+	</div>
 {% endblock %}

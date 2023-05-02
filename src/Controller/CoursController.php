@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/cours')]
+#[Route('/admin/cours')]
 class CoursController extends AbstractController
 {
     #[Route('/', name: 'app_cours_index', methods: ['GET'])]
@@ -40,7 +40,7 @@ class CoursController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_cours_show', methods: ['GET'])]
+    #[Route('/{id_cours}', name: 'app_cours_show', methods: ['GET'])]
     public function show(Cours $cour): Response
     {
         return $this->render('cours/show.html.twig', [
@@ -48,7 +48,7 @@ class CoursController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_cours_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id_cours}/edit', name: 'app_cours_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Cours $cour, CoursRepository $coursRepository): Response
     {
         $form = $this->createForm(CoursType::class, $cour);
@@ -66,10 +66,10 @@ class CoursController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_cours_delete', methods: ['POST'])]
+    #[Route('/{id_cours}', name: 'app_cours_delete', methods: ['POST'])]
     public function delete(Request $request, Cours $cour, CoursRepository $coursRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$cour->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$cour->getIdCours(), $request->request->get('_token'))) {
             $coursRepository->remove($cour, true);
         }
 

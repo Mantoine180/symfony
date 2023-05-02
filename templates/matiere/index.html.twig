@@ -8,20 +8,23 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>libelle</th>
+                <th>Libelle</th>
+                <th>Professeur</th>
                 <th>Specialite</th>
                 <th>nb hours</th>
+                <th>nb hours consomé</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for matiere in matieres %}
             <tr>
-                <td>{{ matiere.id }}</td>
                 <td>{{ matiere.libelle }}</td>
+                <td>{{ matiere.intervenant.user.lastname }}</td>
                 <td>{{ matiere.specialite }}</td>
                 <td>{{ matiere.nbHours }}</td>
+                <td>{{ get_minute_by_matiere(matiere) / 60 }}</td>
+
                 <td>
                     <a href="{{ path('app_matiere_show', {'id': matiere.id}) }}">show</a>
                     <a href="{{ path('app_matiere_edit', {'id': matiere.id}) }}">edit</a>

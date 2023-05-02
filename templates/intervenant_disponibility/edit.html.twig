@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit IntervenantDisponibility{% endblock %}
+
+{% block body %}
+    <h1>Editer les disponibilités</h1>
+
+    {{ include('intervenant_disponibility/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_intervenant_disponibility_index') }}">back to list</a>
+
+    {{ include('intervenant_disponibility/_delete_form.html.twig') }}
+{% endblock %}

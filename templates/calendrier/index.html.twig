@@ -1,14 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Calendrier index{% endblock %}
+{% block title %}Calendrier d'alternance{% endblock %}
 
 {% block body %}
-    <h1>Calendrier index</h1>
+    <h1>Calendrier d'alternance</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id_calendrier</th>
                 <th>Date_debut</th>
                 <th>Type</th>
                 <th>actions</th>
@@ -17,7 +16,6 @@
         <tbody>
         {% for calendrier in calendriers %}
             <tr>
-                <td>{{ calendrier.idCalendrier }}</td>
                 <td>{{ calendrier.dateDebut ? calendrier.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ calendrier.type }}</td>
                 <td>

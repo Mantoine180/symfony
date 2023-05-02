@@ -8,20 +8,20 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Heures de cours de début</th>
-                <th>Heures de Cours de fin</th>
+                <th>Matière</th>
+                <th>Heure de début</th>
+                <th>Heure de fin</th>
                 <th>actions</th>
             </tr>
         </thead>
-
         <tbody>
         {% for cour in cours %}
             <tr>
+                <td>{{ cour.idMatiere.fullName }}</td>
                 <td>{{ cour.dateHeureCourDebut ? cour.dateHeureCourDebut|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ cour.dateHeureCourFin ? cour.dateHeureCourFin|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_cours_show', {'id_cours': cour.idCours}) }}">show</a>
-                    <a href="{{ path('app_cours_edit', {'id_cours': cour.idCours}) }}">edit</a>
+                    <a href="{{ path('app_cours_delete_intervenant', {'id_cours': cour.idCours}) }}">delete</a>
                 </td>
             </tr>
         {% else %}
@@ -32,5 +32,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_cours_new') }}">Create new</a>
 {% endblock %}

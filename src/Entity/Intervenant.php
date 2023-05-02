@@ -16,14 +16,7 @@ class Intervenant
     #[ORM\Column]
     private ?int $id_intervenant = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $nb_heure = null;
-
-    #[ORM\OneToMany(mappedBy: 'intervenant', targetEntity: Cours::class)]
-    #[Ignore]
-    private Collection $cours;
-
-    #[ORM\OneToMany(mappedBy: 'intervenant', targetEntity: Matiere::class)]
+    #[ORM\OneToMany(mappedBy: 'intervenant', targetEntity: Matiere::class,cascade: ['persist', 'remove'])]
     #[Ignore]
     private Collection $matieres;
 
@@ -33,8 +26,12 @@ class Intervenant
 
     public function __construct()
     {
-        $this->cours = new ArrayCollection();
         $this->matieres = new ArrayCollection();
+    }
+
+    public function getFullName(): string
+    {
+        return $this->user->getFirstname() . ' ' . $this->user->getLastname();
     }
 
     public function getIdIntervenant(): ?int
@@ -45,48 +42,6 @@ class Intervenant
     public function setIdIntervenant(int $id_intervenant): self
     {
         $this->id_intervenant = $id_intervenant;
-
-        return $this;
-    }
-
-    public function getNbHeure(): ?int
-    {
-        return $this->nb_heure;
-    }
-
-    public function setNbHeure(?int $nb_heure): self
-    {
-        $this->nb_heure = $nb_heure;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Cours>
-     */
-    public function getCours(): Collection
-    {
-        return $this->cours;
-    }
-
-    public function addCour(Cours $cour): self
-    {
-        if (!$this->cours->contains($cour)) {
-            $this->cours->add($cour);
-            $cour->setIntervenant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCour(Cours $cour): self
-    {
-        if ($this->cours->removeElement($cour)) {
-            // set the owning side to null (unless already changed)
-            if ($cour->getIntervenant() === $this) {
-                $cour->setIntervenant(null);
-            }
-        }
 
         return $this;
     }
